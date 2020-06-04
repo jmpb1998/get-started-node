@@ -1,5 +1,5 @@
 ---
 applications:
- - name: GetStartedNode
+ - name: FlappyFish
    random-route: true
    memory: 256M

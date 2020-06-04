@@ -1,0 +1,146 @@
+<!DOCTYPE html>  
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="stylesheet" href="./dist/style.css" />
+        <title>Flappy Fish</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+
+      <div class="bg-white shadow-md rounded relative w-3/4 max-w-xl pt-6 pb-8 mb-4 ml-10 mr-10 flex">
+        <!--Sign In Form-->
+        <div class="w-1/2 mx-3">
+          
+            <form action="/loginCheck" method="POST" class="rounded w-full pt-6 pb-8 mb-4 mr-3" id="sign-in">
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                  Username
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username" name="username">
+              </div>
+              <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                  Password
+                </label>
+                <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password"  name="password" placeholder="******************">
+                <p class="text-red-500 text-xs italic">Please choose a password.</p>
+              </div>
+              <div class="flex items-center justify-between">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  Sign In
+                </button>
+                <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+                  Forgot Password?
+                </a>
+              </div>
+            </form>
+            <img class="w-2/3" src="dolly-fish-web.png" alt="Italian Trulli">
+        </div>
+        
+
+        <!--Sign Up Form-->
+        <div class="w-1/2 mx-3">
+          <form action="/registerUser" method="POST" class="rounded w-full pt-6 pb-8 mb-4 mr-3" id="sign-up">
+            <div class="mb-4 w-full">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                Username
+              </label>
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username" name="username">
+            </div>
+            <div class="mb-6">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                Email
+              </label>
+              <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" name="email" placeholder="john.doe@mail.com">
+              <p class="text-red-500 text-xs italic">You need a valid e-mail to sign up</p>
+            </div>
+            <div class="mb-6">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                Password
+              </label>
+              <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="password" placeholder="******************">
+              <p class="text-red-500 text-xs italic">Please choose a password.</p>
+            </div>
+            <div class="mb-6">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                Repeat Password
+              </label>
+              <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" name="repeatPassword" placeholder="******************">
+              <p class="text-red-500 text-xs italic">Please choose a password.</p>
+            </div>
+            <div class="flex items-center justify-between">
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                Sign Up
+              </button>
+              <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+                Forgot Password?
+              </a>
+            </div>
+          </form>
+        </div>  
+      </div>
+
+       
+        
+           
+            
+            
+         
+        
+ 
+        <script src="js/app.js"></script>
+
+        <!-- Function to start default placeholder for week field --> 
+        <script>
+            function getWeek() {
+
+            }
+        </script>
+
+
+        <script>
+            function toMainFormPage() {
+               window.location.href = "/TeacherPlat/index.html";
+            }
+        </script>
+
+        <!--Login button-->
+        <script>
+            const sign_in_Form = document.getElementById("sign-in");
+            const sign_up_Form = document.getElementById("sign-up"); 
+            
+            /*sign_in_Form.addEventListener("submit", (e) => {
+              e.preventDefault();
+            })*/
+        </script>
+
+        <!-- Function for button reports - give redirect -->
+        <script>
+          function redirectReport() {
+            location.replace("https://ww")
+          }
+        </script>
+
+        <!-- Function on submit form -->
+        <script>
+          // get elements from form 
+          var formData = document.getElementById("submit-question"); 
+          const formDataTry = new FormData(formData)
+          const jsonData = JSON.stringify((formData.elements)); 
+          console.log(formData);
+          console.log(JSON.stringify(formDataTry));
+          console.log(jsonData); 
+          //var formJson = JSON.stringify($('#submit-question').serializeArray());
+
+
+          // store the elements 
+          storeQuestion(jsonData); 
+        </script>
+
+    </body>
+
+</html>
