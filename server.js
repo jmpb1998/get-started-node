@@ -115,6 +115,29 @@ function findByDescription(partialDescription) {
     });
 }
 
+function findQuestionDB (username) {
+  return new Promise((resolve, reject) => {
+  
+      db.find({
+          "selector": {
+                "type": {
+                  "$eq": "question"
+                },
+                "teacher": {
+                  "$eq": username
+                }
+          } 
+      }, (err, documents) => {
+          if (err) {
+              reject(err);
+          } else {
+              //resolve({ data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 });
+              resolve((documents.docs));
+          }
+      });
+  });
+}
+
 
 
 // get indexes of DB 
@@ -230,7 +253,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     console.log(randomNumber);
     console.log('cookie created successfully');
 
-    var doc = { "type" : type, "_id" : username, "email" : email, "password" : password, "school" : school, "class" : classTag, "loginCookie" : randomNumber };
+    var doc = { "type" : type, "email" : email, "password" : password, "school" : school, "class" : classTag, "loginCookie" : randomNumber };
   
     console.log(doc);
 
@@ -242,7 +265,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
         //response.send("Error");
         return;
       }
-      //doc._id = body.id;
+      doc._id = body.id;
       //callback(err, body); 
     }); 
 
@@ -261,19 +284,6 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
   //var userID = findByDescription(req.cookie); 
   console.log(req.cookies.loginKey);
 
-  /*var userData = db.find({ "selector": {
-                  "loginCookie": {
-                    "$eq": req.cookies.loginKey.toString() 
-                  }
-              }       
-        }, (err, documents) => {
-            if (err) {
-                console.log(err);
-            } else {
-                //var json = { data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 }
-                return (documents);
-            }
-  }); */
 
   findByDescription(req.cookies.loginKey.toString()).then(function(v) {
     var _class = v[0].class[0]; 
@@ -284,10 +294,10 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
     var week   = req.body.week;
     var question = req.body.question; 
     var answer = req.body.answer;  
-
+    var teacher = req.body._id; 
     // json to store question 
     // need to find cookie to store it right 
-    var doc = {"type" : type, "module" : _module , "week" : week, "question" : question, "answer" : answer, "class" : _class, "school" : school}; 
+    var doc = {"type" : type, "module" : _module , "week" : week, "question" : question, "answer" : answer, "class" : _class, "school" : school, "teacher" : teacher}; 
 
     db.insert(doc, function(err, body, header) {
       if (err) {
@@ -331,6 +341,27 @@ app.get('/getLeaderboard', (req,res)=>{
   })
 });
 
+
+app.get('/getQuestion', (req, res) =>{
+
+  var exampleCookie = "0266870525"; 
+  // req.cookies.loginKey.toString() 
+
+  findByDescription(exampleCookie).then( function(v) {
+    
+    var user = v[0]._id; 
+    console.log(user);
+    // fetched user making request 
+    // fetch questions from user now 
+    findQuestionDB(user).then( function(dbData) {
+      var questions = dbData; 
+      console.log(dbData); 
+      res.json(dbData); 
+    })
+  })
+
+  // res.json(documents); 
+})
 
 
 // login check 
