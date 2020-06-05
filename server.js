@@ -115,6 +115,10 @@ function findByDescription(partialDescription) {
     });
 }
 
+function loginQuery() {
+
+}
+
 function findQuestionDB (username) {
   return new Promise((resolve, reject) => {
   
@@ -344,7 +348,7 @@ app.get('/getLeaderboard', (req,res)=>{
 
 app.get('/getQuestion', (req, res) =>{
 
-  var exampleCookie = "0266870525"; 
+  var exampleCookie = "7094736950"; 
   // req.cookies.loginKey.toString() 
 
   findByDescription(exampleCookie).then( function(v) {
