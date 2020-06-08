@@ -10,6 +10,12 @@ const morgan = require("morgan");
 var logger = require('logger').createLogger(); 
 var utils = require('utils');
 
+// Enable ejs
+app.set('view engine', 'ejs');
+app.use(express.json());
+
+var router = express.Router();
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
   extended: false 
@@ -100,9 +106,7 @@ function findByDescription(partialDescription) {
         let search = partialDescription;
         db.find({
             "selector": {
-                  "loginCookie": {
-                    "$eq": search
-                  }
+                  "loginCookie": search
             } 
         }, (err, documents) => {
             if (err) {
@@ -117,6 +121,25 @@ function findByDescription(partialDescription) {
 
 function loginQuery() {
 
+}
+
+function cookietoName(cookie){
+      return new Promise((resolve, reject) => {
+        let search = cookie;
+        db.find({
+            "selector": {
+                  "type": "user",
+                  "loginCookie": search
+            } 
+        }, (err, documents) => {
+            if (err) {
+                reject(err);
+            } else {
+                //resolve({ data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 });
+                resolve((documents.docs));
+            }
+        });
+    });
 }
 
 function findQuestionDB (username) {
@@ -257,7 +280,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     console.log(randomNumber);
     console.log('cookie created successfully');
 
-    var doc = { "type" : type, "email" : email, "password" : password, "school" : school, "class" : classTag, "loginCookie" : randomNumber };
+    var doc = { "username": username, "type" : type, "email" : email, "password" : password, "school" : school, "class" : classTag, "loginCookie" : randomNumber };
   
     console.log(doc);
 
@@ -282,7 +305,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
 
 // Submit question
 app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
-  console.log("Submit new question"); 
+  console.log("Submit new question");
 
   // find user requesting 
   //var userID = findByDescription(req.cookie); 
@@ -292,16 +315,22 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
   findByDescription(req.cookies.loginKey.toString()).then(function(v) {
     var _class = v[0].class[0]; 
     var school = v[0].school[0]; 
+    console.log(req.body.question);
 
     var type = "question";
-    var _module = req.body.module;
+    var module = req.body.module;
+    console.log(module);
     var week   = req.body.week;
     var question = req.body.question; 
     var answer = req.body.answer;  
-    var teacher = req.body._id; 
+    var teacher = req.cookies.loginKey; 
+    var difficulty = req.body.difficulty
+    console.log(teacher);
+    console.log(difficulty);
     // json to store question 
     // need to find cookie to store it right 
-    var doc = {"type" : type, "module" : _module , "week" : week, "question" : question, "answer" : answer, "class" : _class, "school" : school, "teacher" : teacher}; 
+    var doc = {"type" : type, "module" : module , "week" : week, "question" : question, "answer" : answer, "class" : _class, "school" : school, "teacher" : teacher, "difficulty": difficulty}; 
+    console.log(doc.answer);
 
     db.insert(doc, function(err, body, header) {
       if (err) {
@@ -311,6 +340,8 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
       }
       doc.hi = "hi";
       doc._id = body.id;
+      res.redirect('/questionForm.html');
+      
       //callback(err, body); 
     }); 
     
@@ -347,20 +378,25 @@ app.get('/getLeaderboard', (req,res)=>{
 
 
 app.get('/getQuestion', (req, res) =>{
-
-  var exampleCookie = "7094736950"; 
+    console.log("request sent");
+  var userCookie = req.cookies.loginKey.toString()  ; 
   // req.cookies.loginKey.toString() 
 
-  findByDescription(exampleCookie).then( function(v) {
+  findByDescription(userCookie).then( function(v) {
     
     var user = v[0]._id; 
     console.log(user);
     // fetched user making request 
     // fetch questions from user now 
-    findQuestionDB(user).then( function(dbData) {
+    findQuestionDB(userCookie).then( function(dbData) {
       var questions = dbData; 
+      module.exports.dbData = dbData;
       console.log(dbData); 
-      res.json(dbData); 
+      //res.json(dbData); 
+      cookietoName(userCookie).then(function(userName) {
+          var name = userName[0].username;
+          res.render('getQuestion', {formsub: questions, name});
+      })
     })
   })
 
