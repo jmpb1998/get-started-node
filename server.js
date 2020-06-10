@@ -119,8 +119,24 @@ function findByDescription(partialDescription) {
     });
 }
 
-function loginQuery() {
-
+function loginQuery(username, password) {
+  return new Promise((resolve, reject) => {
+    
+      db.find({
+          "selector": {
+                "type": "user",
+                "_id": username, 
+                "password": password
+          } 
+      }, (err, documents) => {
+          if (err) {
+              reject(err);
+          } else {
+              //resolve({ data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 });
+              resolve((documents.docs));
+          }
+      });
+  });
 }
 
 function cookietoName(cookie){
@@ -280,27 +296,26 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     console.log(randomNumber);
     console.log('cookie created successfully');
 
-    var doc = { "username": username, "type" : type, "email" : email, "password" : password, "school" : school, "class" : classTag, "loginCookie" : randomNumber };
+    var doc = { "_id": username, "type" : type, "email" : email, "password" : password, "school" : school, "classTag" : classTag, "loginCookie" : randomNumber };
   
     console.log(doc);
-
-    //insertOne[vendor](doc);
 
     db.insert(doc, function(err, body, header) {
       if (err) {
         console.log('[mydb.insert] ', err.message);
+        res.redirect('/register.html')
         //response.send("Error");
         return;
+      } else {
+        res.cookie('loginKey', randomNumber); 
+        res.redirect('/questionForm.html');  
       }
-      doc._id = body.id;
+      //doc._id = body.id;
       //callback(err, body); 
     }); 
-
-    console.log("Hi");
   }
 
-  res.cookie('loginKey', randomNumber); 
-  res.redirect('/questionForm.html');  
+  
 })
 
 // Submit question
@@ -313,7 +328,7 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
 
 
   findByDescription(req.cookies.loginKey.toString()).then(function(v) {
-    var _class = v[0].class[0]; 
+    var _class = v[0].classTag[0]; 
     var school = v[0].school[0]; 
     console.log(req.body.question);
 
@@ -324,12 +339,19 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
     var question = req.body.question; 
     var answer = req.body.answer;  
     var teacher = req.cookies.loginKey; 
-    var difficulty = req.body.difficulty
-    console.log(teacher);
-    console.log(difficulty);
+    var difficulty = req.body.difficulty; 
+    var wrong1 = req.body.wrong1; 
+    var wrong2 = req.body.wrong2; 
+    var wrong3 = req.body.wrong3; 
+    var wrong4 = req.body.wrong4; 
+
+
+    var doc = {"type" : type, "module" : module , "week" : week, "question" : question, "answer" : answer, "classTag" : _class, "school" : school, "teacher" : teacher, "difficulty": difficulty, "wrong1": wrong1, "wrong2": wrong2, "wrong3": wrong3, "wrong4": wrong4};
+
+
     // json to store question 
     // need to find cookie to store it right 
-    var doc = {"type" : type, "module" : module , "week" : week, "question" : question, "answer" : answer, "class" : _class, "school" : school, "teacher" : teacher, "difficulty": difficulty}; 
+
     console.log(doc.answer);
 
     db.insert(doc, function(err, body, header) {
@@ -338,7 +360,7 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
         //response.send("Error");
         return;
       }
-      doc.hi = "hi";
+
       doc._id = body.id;
       res.redirect('/questionForm.html');
       
@@ -421,14 +443,33 @@ app.post('/loginCheck', urlencodedParser, function (req, res) {
     return;
   } else{
     
-    var randomNumber = (Math.floor(Math.random() * 100000000000) + 100000000000).toString().substring(2);
-    console.log(randomNumber);
-    res.cookie('loginKey', randomNumber);
-    console.log('cookie created successfully');
+  loginQuery(userName, password).then(function(v) {
+    if (v != null) {
+      // login successful 
+      var randomNumber = (Math.floor(Math.random() * 100000000000) + 100000000000).toString().substring(2);
+      console.log(randomNumber);
+      res.cookie('loginKey', randomNumber);
+      console.log('cookie created successfully');
+  
+      var doc = {"_id" : userName, "password" : password, "loginCookie" : randomNumber, "_rev" : v._rev };
+      
+      // Update user cookie 
+      db.insert(doc, function(err, body, header) {
+        if (err) {
+          console.log('[mydb.insert] ', err.message);
+          //response.send("Error");
+          return;
+        }
+      });
+      
+      return res.redirect('/questionForm.html');
+    }
+    else {
+      // login unsuccessful 
+      return res.redirect('/'); 
+    }
+  })
 
-    var doc = {"_id" : userName, "password" : password, "loginCookie" : randomNumber };
-    insertOne[vendor](doc, res);
-    return res.redirect('/questionForm.html');
   }  
 
   

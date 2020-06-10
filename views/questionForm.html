@@ -18,6 +18,28 @@
         .nav-item:hover { background: #1947ee; }
         .account-link:hover { background: #3d68ff; }
     </style>
+
+
+      <!--Check if text was written-->
+      <script type="text/javascript">
+        function CheckWritten1(){
+        var element=document.getElementById('wrong2');
+        element.style.display='block';
+        }
+      </script>
+      <script type="text/javascript">
+        function CheckWritten2(){
+        var element=document.getElementById('wrong3');
+        element.style.display='block';
+        }
+      </script>
+      <script type="text/javascript">
+        function CheckWritten3(){
+        var element=document.getElementById('wrong4');
+        element.style.display='block';
+        }
+      </script>
+
     </head>
 
     <body>
@@ -91,6 +113,8 @@
                           </div>
                         
                       </div>
+
+                      
                     </div>
                       <div class="w-full md:w-3/5 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
@@ -123,7 +147,40 @@
                         
                       </div>
                     </div>
+                    
                     </div>
+
+                    <div class="flex flex-wrap -mx-40 mb-6">
+                      <div class="w-full md:w-5/5 px-3 mb-6 md:mb-6">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+                          Wrong option 1
+                        </label>
+                        <input onkeypress="CheckWritten1()" name="wrong1" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Poland">
+                      </div>
+
+                      <div class="w-full md:w-5/5 px-3 mb-6 md:mb-6" style='display:none;' id="wrong2">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+                          Wrong option 2
+                        </label>
+                        <input onkeypress="CheckWritten2()" name="wrong2" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Portugal">
+                      </div>
+
+                      <div class="w-full md:w-5/5 px-3 mb-6 md:mb-6" style='display:none;' id="wrong3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+                          Wrong option 3
+                        </label>
+                        <input onkeypress="CheckWritten3()" name="wrong3" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Nigeria">
+                      </div>
+
+                      <div class="w-full md:w-5/5 px-3 mb-6 md:mb-0" id="wrong4" style='display:none;'>
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+                          Wrong option 4
+                        </label>
+                        <input  name="wrong4" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Colombia">
+                      </div>
+                    </div>
+
+                    
 
                     <br> <br>
                     <div>
