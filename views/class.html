@@ -19,7 +19,11 @@
         .active-nav-link { background: #1947ee; }
         .nav-item:hover { background: #1947ee; }
         .account-link:hover { background: #3d68ff; }
-        .logo {
+        
+        
+        h4 {color: white; font-size: 20px;}
+       div .cont1 {width: 70%!important; margin: 0 auto;}
+       .logo {
        color:
 white;
 
@@ -37,13 +41,13 @@ font-family: Carla;}
 <body class="bg-gray-100 font-family-karla flex" style="background: linear-gradient(rgb(47,150,163), rgb(48,62,143));" >
     
     <aside class="fixed bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
-        <nav class="text-white text-base font-semibold pt-3">
-            <div class='logo font-normal'>Flappy Fish</div>
+        <div class='logo mt-3'>Flappy Fish</div>
+        <nav class="text-white text-base font-semibold">
             <a href="questionForm.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item">
                 <i class=" mr-3"></i>
                 Add Questions
             </a>
-            <a href="getQuestion" class="flex items-center active-nav-link text-white py-6 pl-6 nav-item">
+            <a href="getQuestion" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item">
                 <i class=" mr-3"></i>
                 View Questions
             </a>
@@ -51,7 +55,7 @@ font-family: Carla;}
                 <i class="  mr-3"></i>
                 Statistics
             </a>
-            <a href="class.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item font-bold font-family-karla">
+            <a href="class.html" class="flex items-center active-nav-link text-white py-6 pl-6 nav-item">
                 <i class="  mr-3"></i>
                 Class
             </a>
@@ -119,26 +123,80 @@ font-family: Carla;}
             </button> -->
         </header>
                 <div class="w-full mt-12">
-                       <h2  class="text-center mr-3" style="font-family: Title; font-size: 70px; color:white;">View Questions</h2>
-                    <div class="bg-white">
+                       <h2  class="text-center mr-3" style="font-family: Title; font-size: 70px; color:white;">Classes</h2>
+                       <br>
+                    <div class="cont1">
+                                           <h4>Mathematics</h4>
+
                         <table class="min-w-full bg-white">
                             <thead class="bg-gray-800 text-white">
                                 <tr>
-                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Teacher</th>
-                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Question</th>
-                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Answer</th>
-                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Subject</td>
-                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Difficulty</td>
+                                <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Ranking</td>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Student</th>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Last Grade</th>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-seTeaTeacherTeacherchermibold text-sm">N. questions answered</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody class="text-gray-700">
-                                    <%
-                                        var list = '';
-                                        for (i = 0; i < formsub.length; i++) {
-                                        list += '<tr class="bg-gray-200"> <td class="w-1/3 text-left py-3 px-4">' + name +'</td>' + '<td class="w-1/3 text-left py-3 px-4">' + formsub[i].question + '</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].answer +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].module +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].difficulty +'</td> </tr>';
-                                        }
-                                    %>
-                                    <%- list %>
+                                   <tr class="bg-gray-200"> <td class="text-left py-3 px-4">1</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">87/100</td> <td class="text-left py-3 px-4">355</td></tr>
+                                                                      <tr class="bg-gray-200"> <td class="text-left py-3 px-4">2</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">77/100</td> <td class="text-left py-3 px-4">142</td></tr>
+
+                                                                                                         <tr class="bg-gray-200"> <td class="text-left py-3 px-4">3</td><td class="text-left py-3 px-4">Jack Ma</td> <td class="text-left py-3 px-4">65/100</td> <td class="text-left py-3 px-4">662</td></tr>
+
+                                                                                                                                            <tr class="bg-gray-200"> <td class="text-left py-3 px-4">4</td><td class="text-left py-3 px-4">Leo Goudelis</td> <td class="text-left py-3 px-4">32/100</td> <td class="text-left py-3 px-4">343</td></tr>
+
+                            </tbody>
+                        </table>
+                    </div><br>
+                    
+                    
+                    <div class="cont1">
+                                           <h4>French</h4>
+
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-gray-800 text-white">
+                                <tr>
+                                <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Ranking</td>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Student</th>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Last Grade</th>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-seTeaTeacherTeacherchermibold text-sm">N. questions answered</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700">
+                                   <tr class="bg-gray-200"> <td class="text-left py-3 px-4">1</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">87/100</td> <td class="text-left py-3 px-4">355</td></tr>
+                                                                      <tr class="bg-gray-200"> <td class="text-left py-3 px-4">2</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">77/100</td> <td class="text-left py-3 px-4">142</td></tr>
+
+                                                                                                         <tr class="bg-gray-200"> <td class="text-left py-3 px-4">3</td><td class="text-left py-3 px-4">Jack Ma</td> <td class="text-left py-3 px-4">65/100</td> <td class="text-left py-3 px-4">662</td></tr>
+
+                                                                                                                                            <tr class="bg-gray-200"> <td class="text-left py-3 px-4">4</td><td class="text-left py-3 px-4">Leo Goudelis</td> <td class="text-left py-3 px-4">32/100</td> <td class="text-left py-3 px-4">343</td></tr>
+
+                            </tbody>
+                        </table>
+                    </div><br>
+
+                    <div class="cont1">
+                                        <h4>Science</h4>
+
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-gray-800 text-white">
+                                <tr>
+                                <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Ranking</td>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Student</th>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Last Grade</th>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-seTeaTeacherTeacherchermibold text-sm">N. questions answered</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700">
+                                   <tr class="bg-gray-200"> <td class="text-left py-3 px-4">1</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">87/100</td> <td class="text-left py-3 px-4">355</td></tr>
+                                                                      <tr class="bg-gray-200"> <td class="text-left py-3 px-4">2</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">77/100</td> <td class="text-left py-3 px-4">142</td></tr>
+
+                                                                                                         <tr class="bg-gray-200"> <td class="text-left py-3 px-4">3</td><td class="text-left py-3 px-4">Jack Ma</td> <td class="text-left py-3 px-4">65/100</td> <td class="text-left py-3 px-4">662</td></tr>
+
+                                                                                                                                            <tr class="bg-gray-200"> <td class="text-left py-3 px-4">4</td><td class="text-left py-3 px-4">Leo Goudelis</td> <td class="text-left py-3 px-4">32/100</td> <td class="text-left py-3 px-4">343</td></tr>
+
                             </tbody>
                         </table>
                     </div>

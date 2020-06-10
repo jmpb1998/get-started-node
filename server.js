@@ -181,6 +181,28 @@ function findQuestionDB (username) {
   });
 }
 
+function findUserDB (email, password) {
+return new Promise((resolve, reject) => {
+          db.find({
+          "selector": {
+                "email": {
+                  "$eq": email
+                },
+                "password": {
+                  "$eq": password
+                }
+          } 
+      }, (err, documents) => {
+            if (err) {
+                reject(err);
+            } else {
+                //resolve({ data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 });
+                resolve((documents.docs));
+            }
+        });
+    });
+}
+
 
 
 // get indexes of DB 
@@ -318,6 +340,20 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
   
 })
 
+app.post("/loginUser", urlencodedParser, function (req, res, done) {
+  console.log("User Login");
+  var email    = req.body.email;
+  var password = req.body.password; 
+
+  var type = "user"; 
+
+  
+  findUserDB(email, password).then( function(dbData) {
+
+  res.cookie('loginKey', dbData.loginCookie); 
+  res.redirect('/questionForm.html');  
+})
+})
 // Submit question
 app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
   console.log("Submit new question");
