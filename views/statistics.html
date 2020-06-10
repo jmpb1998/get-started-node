@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tailwind Admin Template</title>
+    <title>Flappy Fish</title>
     <meta name="author" content="David Grzyb">
     <meta name="description" content="">
 
@@ -19,16 +19,26 @@
         .active-nav-link { background: #1947ee; }
         .nav-item:hover { background: #1947ee; }
         .account-link:hover { background: #3d68ff; }
+        .logo {
+       color:
+white;
+
+text-align: center;
+
+font-size: 30px;
+
+padding: 10px;
+
+border-bottom: 1px solid rgba(255,255,255,0.8);
+
+font-family: Carla;}
     </style>
 </head>
 <body class="bg-gray-100 font-family-karla flex" style="background: linear-gradient(rgb(47,150,163), rgb(48,62,143));" >
     
     <aside class="fixed bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
         <nav class="text-white text-base font-semibold pt-3">
-            <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item">
-                <i class=" mr-3"></i>
-                Profile
-            </a>
+             <div class='logo font-normal'>Flappy Fish</div>
             <a href="questionForm.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item">
                 <i class=" mr-3"></i>
                 Add Questions
@@ -41,11 +51,15 @@
                 <i class="  mr-3"></i>
                 Statistics
             </a>
+            <a href="class.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item font-bold font-family-karla">
+                <i class="  mr-3"></i>
+                Class
+            </a>
         </nav>
     </aside>
 
     <div class="w-full flex flex-col h-screen ml-64">
-        <h2  class="text-center mt-12" style="font-family: Title; font-size: 70px; color:white;">Flappy Fish</h2>
+        <h2  class="text-center mt-12" style="font-family: Title; font-size: 70px; color:white;">Statistics</h2>
         <div class="bg-white w-full  rounded px-48 py-20 text-center shadow-md">
             <div class="w-full overflow-x-hidden border-t flex flex-col">
                 <main class="w-full flex-grow p-6">
