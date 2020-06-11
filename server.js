@@ -303,8 +303,10 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
   var email    = req.body.email;
   var password = req.body.password; 
   var repPassword = req.body.repeatPassword;  
-  var classTag = req.body.classTag;
-  var school = req.body.school;
+  var classTag = req.body.classTag[0];
+  if (classTag == "Other") classTag = req.body.classTag[1]; 
+  var school = req.body.school[0];
+  if (school == "Other") school = req.body.school[1]; 
 
   var type = "user"; 
 
@@ -374,7 +376,7 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
     var week   = req.body.week;
     var question = req.body.question; 
     var answer = req.body.answer;  
-    var teacher = req.cookies.loginKey; 
+    var teacher = v[0]._id; 
     var difficulty = req.body.difficulty; 
     var wrong1 = req.body.wrong1; 
     var wrong2 = req.body.wrong2; 
@@ -446,13 +448,14 @@ app.get('/getQuestion', (req, res) =>{
     console.log(user);
     // fetched user making request 
     // fetch questions from user now 
-    findQuestionDB(userCookie).then( function(dbData) {
+    findQuestionDB(user).then( function(dbData) {
       var questions = dbData; 
       module.exports.dbData = dbData;
       console.log(dbData); 
       //res.json(dbData); 
       cookietoName(userCookie).then(function(userName) {
-          var name = userName[0].username;
+          var name = userName[0]._id;
+          console.log(userName);
           res.render('getQuestion', {formsub: questions, name});
       })
     })
@@ -479,32 +482,42 @@ app.post('/loginCheck', urlencodedParser, function (req, res) {
     return;
   } else{
     
-  loginQuery(userName, password).then(function(v) {
-    if (v != null) {
-      // login successful 
-      var randomNumber = (Math.floor(Math.random() * 100000000000) + 100000000000).toString().substring(2);
-      console.log(randomNumber);
-      res.cookie('loginKey', randomNumber);
-      console.log('cookie created successfully');
-  
-      var doc = {"_id" : userName, "password" : password, "loginCookie" : randomNumber, "_rev" : v._rev };
-      
-      // Update user cookie 
-      db.insert(doc, function(err, body, header) {
-        if (err) {
-          console.log('[mydb.insert] ', err.message);
-          //response.send("Error");
-          return;
-        }
-      });
-      
-      return res.redirect('/questionForm.html');
-    }
-    else {
-      // login unsuccessful 
-      return res.redirect('/'); 
-    }
-  })
+    loginQuery(userName, password).then(function(v) {
+      if (v.length != 0) {
+        console.log(v);
+        // login successful 
+
+        // get user data 
+        var _class = v[0].classTag;
+        var school = v[0].school; 
+        var email = v[0].email; 
+        var type = v[0].type; 
+
+
+        // create cookie 
+        var randomNumber = (Math.floor(Math.random() * 100000000000) + 100000000000).toString().substring(2);
+        console.log(randomNumber);
+        res.cookie('loginKey', randomNumber);
+        console.log('cookie created successfully');
+    
+        var doc = {"_id" : userName, "password" : password, "loginCookie" : randomNumber, "_rev" : v[0]._rev, "school" : school, "classTag": _class, "type" : type, "email" : email};
+        console.log(doc);
+        // Update user cookie 
+        db.insert(doc, function(err, body, header) {
+          if (err) {
+            console.log('[mydb.insert] ', err.message);
+            //response.send("Error");
+            return;
+          }
+        });
+        
+        return res.redirect('/questionForm.html');
+      }
+      else {
+        // login unsuccessful 
+        return res.redirect('/'); 
+      }
+    })
 
   }  
 
