@@ -303,10 +303,27 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
   var email    = req.body.email;
   var password = req.body.password; 
   var repPassword = req.body.repeatPassword;  
-  var classTag = req.body.classTag[0];
-  if (classTag == "Other") classTag = req.body.classTag[1]; 
   var school = req.body.school[0];
   if (school == "Other") school = req.body.school[1]; 
+
+
+  // Register the number of modules in classTag list 
+  var classList = []; 
+  for (var i = 0; i < req.body.classTag.length; i++) {
+    if (req.body.classTag[i] == "Other") {
+      classList.push(req.body.classTag[i+1]); 
+      i++;  
+    }
+    else {
+      classList.push(req.body.classTag[i]);
+    }
+  }
+
+  // initialize score list 
+  var scoreList = []; 
+  for (var i = 0; i < classList.length; i++) {
+    scoreList.push(0); 
+  }
 
   var type = "user"; 
 
@@ -320,7 +337,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     console.log(randomNumber);
     console.log('cookie created successfully');
 
-    var doc = { "_id": username, "type" : type, "email" : email, "password" : password, "school" : school, "classTag" : classTag, "loginCookie" : randomNumber };
+    var doc = { "_id": username, "type" : type, "email" : email, "password" : password, "school" : school, "classTag" : classList, "loginCookie" : randomNumber, "score" : scoreList};
   
     console.log(doc);
 
