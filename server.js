@@ -427,12 +427,33 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
 
   findByDescription(req.cookies.loginKey.toString()).then(function(v) {
     var _class = v[0].classTag[0]; 
-    var school = v[0].school[0]; 
+    var school = v[0].school; 
     console.log(req.body.question);
 
     var type = "question";
     var module = req.body.module;
-    console.log(module);
+
+    // Define objective module definition 
+    switch (module){
+      case "Mathematics":
+        module = "MAT"; 
+        break; 
+      case "French":
+        module = "FRE"; 
+        break; 
+      case "Biology":
+        module = "BIO"; 
+        break; 
+      case "Economic": 
+        module = "ECON"; 
+        break; 
+      case "Sciences":
+        module = "SCI"; 
+        break; 
+      default:
+        module = module; 
+    }
+
     var week   = req.body.week;
     var question = req.body.question; 
     var answer = req.body.answer;  
@@ -444,7 +465,7 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
     var wrong4 = req.body.wrong4; 
 
 
-    var doc = {"type" : type, "module" : module , "week" : week, "question" : question, "answer" : answer, "classTag" : _class, "school" : school, "teacher" : teacher, "difficulty": difficulty, "wrong1": wrong1, "wrong2": wrong2, "wrong3": wrong3, "wrong4": wrong4};
+    var doc = {"type" : type, "module" : module , "week" : week, "question" : question, "answer" : answer, "classTag" : module, "school" : school, "teacher" : teacher, "difficulty": difficulty, "wrong1": wrong1, "wrong2": wrong2, "wrong3": wrong3, "wrong4": wrong4};
 
 
     // json to store question 
