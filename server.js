@@ -312,7 +312,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
   for (var i = 0; i < req.body.classTag.length; i++) {
     if (req.body.classTag[i] == "Other") {
       classList.push(req.body.classTag[i+1]); 
-      i++;  
+      i++;
     }
     else {
       classList.push(req.body.classTag[i]);
