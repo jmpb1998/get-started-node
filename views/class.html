@@ -6,7 +6,11 @@
     <title>Flappy Fish</title>
     <meta name="author" content="David Grzyb">
     <meta name="description" content="">
-
+<script
+			  src="https://code.jquery.com/jquery-3.5.1.min.js"
+			  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+			  crossorigin="anonymous"></script>
+		
     <!-- Tailwind -->
     <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <style>
@@ -36,7 +40,12 @@ padding: 10px;
 border-bottom: 1px solid rgba(255,255,255,0.8);
 
 font-family: Carla;}
+
+.cont1 table.hidden {display: none;}
+.cont1 h4 {cursor: pointer}
     </style>
+
+    
 </head>
 <body class="bg-gray-100 font-family-karla flex" style="background: linear-gradient(rgb(47,150,163), rgb(48,62,143));" >
     
@@ -64,71 +73,13 @@ font-family: Carla;}
 
     <div class="w-full flex flex-col h-screen ml-64">
         <!-- Desktop Header -->
-        
-
-        <!-- Mobile Header & Nav -->
-        <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
-                <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
-                    <i x-show="!isOpen" class="fas fa-bars"></i>
-                    <i x-show="isOpen" class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <!-- Dropdown Nav -->
-            <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-                <a href="index.html" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
-                    <i class="fas fa-tachometer-alt mr-3"></i>
-                    Dashboard
-                </a>
-                <a href="blank.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-sticky-note mr-3"></i>
-                    Blank Page
-                </a>
-                <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-table mr-3"></i>
-                    Tables
-                </a>
-                <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-align-left mr-3"></i>
-                    Forms
-                </a>
-                <a href="tabs.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-tablet-alt mr-3"></i>
-                    Tabbed Content
-                </a>
-                <a href="calendar.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-calendar mr-3"></i>
-                    Calendar
-                </a>
-                <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-cogs mr-3"></i>
-                    Support
-                </a>
-                <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-user mr-3"></i>
-                    My Account
-                </a>
-                <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="fas fa-sign-out-alt mr-3"></i>
-                    Sign Out
-                </a>
-                <button class="w-full bg-white cta-btn font-semibold py-2 mt-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
-                    <i class="fas fa-arrow-circle-up mr-3"></i> Upgrade to Pro!
-                </button>
-            </nav>
-            <!-- <button class="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
-                <i class="fas fa-plus mr-3"></i> New Report
-            </button> -->
-        </header>
                 <div class="w-full mt-12">
                        <h2  class="text-center mr-3" style="font-family: Title; font-size: 70px; color:white;">Classes</h2>
                        <br>
                     <div class="cont1">
-                                           <h4>Mathematics</h4>
+                                           <h4   >Mathematics</h4>
 
-                        <table class="min-w-full bg-white">
+                        <table class="hidden min-w-full bg-white">
                             <thead class="bg-gray-800 text-white">
                                 <tr>
                                 <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Ranking</td>
@@ -138,7 +89,7 @@ font-family: Carla;}
                                     
                                 </tr>
                             </thead>
-                            <tbody class="text-gray-700">
+                            <tbody id="mathsTable" class="text-gray-700">
                                    <tr class="bg-gray-200"> <td class="text-left py-3 px-4">1</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">87/100</td> <td class="text-left py-3 px-4">355</td></tr>
                                                                       <tr class="bg-gray-200"> <td class="text-left py-3 px-4">2</td><td class="text-left py-3 px-4">John Do</td> <td class="text-left py-3 px-4">77/100</td> <td class="text-left py-3 px-4">142</td></tr>
 
@@ -154,7 +105,7 @@ font-family: Carla;}
                     <div class="cont1">
                                            <h4>French</h4>
 
-                        <table class="min-w-full bg-white">
+                        <table class="hidden min-w-full bg-white">
                             <thead class="bg-gray-800 text-white">
                                 <tr>
                                 <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Ranking</td>
@@ -179,7 +130,7 @@ font-family: Carla;}
                     <div class="cont1">
                                         <h4>Science</h4>
 
-                        <table class="min-w-full bg-white">
+                        <table class="hidden min-w-full bg-white">
                             <thead class="bg-gray-800 text-white">
                                 <tr>
                                 <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Ranking</td>
@@ -291,4 +242,11 @@ font-family: Carla;}
         });
     </script>
 </body>
+    
+    <script type="text/javascript">
+       $('.cont1 h4').click(function (){
+            $(this).parent().find('table').toggleClass('hidden')
+        })
+    
+    </script>
 </html>

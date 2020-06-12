@@ -37,7 +37,20 @@
         else  
         element.style.display='none';
         }
-    </script> 
+    </script>
+    
+    <script type="text/javascript">
+        function showClass2(){
+        var element=document.getElementById('show2');
+        element.style.display='block';
+        }
+      </script>
+      <script type="text/javascript">
+        function showClass3(){
+        var element=document.getElementById('show3');
+        element.style.display='block';
+        }
+      </script>
 </head>
 <body class="bg-white font-family-karla h-screen">
 
@@ -72,6 +85,23 @@
                         <label for="password" class="text-lg">Confirm Password</label>
                         <input type="password" name="repeatPassword" id="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" required>
                     </div>
+                    
+                    <div class="flex flex-col pt-4">
+                        <label class="text-lg" for="school">
+                            Acount Type
+                        </label>
+                        
+                        <select name="accountType"  onchange='CheckSchool(this.value);' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option>Teacher</option>
+                        <option>Student</option>
+                        </select>
+
+                        <input type="text" name="accountType" id="accountType" style='display:none;' class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" >
+
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                    </div>
 
                     <div class="flex flex-col pt-4">
                         <label class="text-lg" for="school">
@@ -94,18 +124,41 @@
 
                     <div class="flex flex-col pt-4">
                         <label class="text-lg" for="classTag">
-                            Class
+                            Class 1
                         </label>
                         
-                        <select name="classTag" onchange='CheckClassTag(this.value);' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                        <option>EEE</option>
-                        <option>BIO</option>
-                        <option>MAT</option>
+                        <select onclick="showClass2()" name="classTag" onchange='CheckClassTag(this.value);' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option>Mathematics</option>
+                        <option>French</option>
+                        <option>Science</option>
                         <option>Other</option>
                         </select>
 
-                        <input type="text" name="classTag" id="classTag" style='display:none;' class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" >
+                        
+                        <div id="show2" style='display:none;'>
+                        <label class="text-lg" for="classTag">
+                            Class 2
+                        </label>
+                         <select onclick="showClass3()" name="classTag" onchange='CheckClassTag(this.value);' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option>Mathematics</option>
+                        <option>French</option>
+                        <option>Science</option>
+                        <option>Other</option>
+                        </select>
 
+                        </div>
+                        <div id="show3" style='display:none;'>
+                        <label class="text-lg" for="classTag">
+                            Class 3
+                        </label>
+                         <select onclick="showClass3()" name="classTag" onchange='CheckClassTag(this.value);' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option>Mathematics</option>
+                        <option>French</option>
+                        <option>Science</option>
+                        <option>Other</option>
+                        </select>
+
+                        </div>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                         </div>
