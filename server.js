@@ -203,6 +203,29 @@ return new Promise((resolve, reject) => {
     });
 }
 
+function findDBmodule(school){
+    return new Promise((resolve, reject) => {
+          db.find({
+          "selector": {
+                "school": {
+                  "$eq": school
+                },
+                "type": {
+                  "$eq": "module"
+                }
+                    
+          } 
+      }, (err, documents) => {
+            if (err) {
+                reject(err);
+            } else {
+                //resolve({ data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 });
+                resolve((documents.docs));
+            }
+        });
+    });
+}
+
 
 
 // get indexes of DB 
@@ -340,7 +363,26 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     var doc = { "_id": username, "type" : type, "email" : email, "password" : password, "school" : school, "classTag" : classList, "loginCookie" : randomNumber, "score" : scoreList};
   
     console.log(doc);
-
+    
+    findDBmodule(school).then(function(v){
+        let modules = v.map(s => s.module)
+        let addClasses = classList.filter(el => modules.indexOf(el) < 0);
+        console.log(addClasses);
+        console.log(modules);
+        addClasses.forEach(c => {
+            let qdoc = {"school": school, "module": c, "type":"module"}
+                db.insert(qdoc, function(err, body, header) {
+                    if (err) {
+                        console.log('[mydb.insert] ', err.message);
+                        //response.send("Error");
+                        return;
+                    }
+                    else{
+                        console.log("added module");
+                    }
+                });})
+            })
+    
     db.insert(doc, function(err, body, header) {
       if (err) {
         console.log('[mydb.insert] ', err.message);
@@ -354,6 +396,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
       //doc._id = body.id;
       //callback(err, body); 
     }); 
+    
   }
 
   
