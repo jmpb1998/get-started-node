@@ -119,6 +119,24 @@ function findByDescription(partialDescription) {
     });
 }
 
+function teacherSubjectQuery(teacher){
+    return new Promise((resolve, reject) => {
+        db.find({
+            "selector": {
+                "teacher": search,
+                "type": "user"
+            }
+        }, (err, documents) => {
+            if (err) {
+                reject(err);
+            } else {
+                //resolve({ data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 });
+                resolve((documents.docs));
+            }
+        });
+    });
+}
+
 function loginQuery(username, password) {
   return new Promise((resolve, reject) => {
     
@@ -427,33 +445,12 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
 
   findByDescription(req.cookies.loginKey.toString()).then(function(v) {
     var _class = v[0].classTag[0]; 
-    var school = v[0].school; 
+    var school = v[0].school[0]; 
     console.log(req.body.question);
 
     var type = "question";
     var module = req.body.module;
-
-    // Define objective module definition 
-    switch (module){
-      case "Mathematics":
-        module = "MAT"; 
-        break; 
-      case "French":
-        module = "FRE"; 
-        break; 
-      case "Biology":
-        module = "BIO"; 
-        break; 
-      case "Economic": 
-        module = "ECON"; 
-        break; 
-      case "Sciences":
-        module = "SCI"; 
-        break; 
-      default:
-        module = module; 
-    }
-
+    console.log(module);
     var week   = req.body.week;
     var question = req.body.question; 
     var answer = req.body.answer;  
@@ -465,7 +462,7 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
     var wrong4 = req.body.wrong4; 
 
 
-    var doc = {"type" : type, "module" : module , "week" : week, "question" : question, "answer" : answer, "classTag" : module, "school" : school, "teacher" : teacher, "difficulty": difficulty, "wrong1": wrong1, "wrong2": wrong2, "wrong3": wrong3, "wrong4": wrong4};
+    var doc = {"type" : type, "module" : module , "week" : week, "question" : question, "answer" : answer, "classTag" : _class, "school" : school, "teacher" : teacher, "difficulty": difficulty, "wrong1": wrong1, "wrong2": wrong2, "wrong3": wrong3, "wrong4": wrong4};
 
 
     // json to store question 
@@ -522,7 +519,7 @@ app.get('/getQuestion', (req, res) =>{
     console.log("request sent");
   var userCookie = req.cookies.loginKey.toString()  ; 
   // req.cookies.loginKey.toString() 
-
+    
   findByDescription(userCookie).then( function(v) {
     
     var user = v[0]._id; 
@@ -544,6 +541,10 @@ app.get('/getQuestion', (req, res) =>{
 
   // res.json(documents); 
 })
+
+app.get('/questionForm', (req, res) =>{
+    
+}
 
 
 // login check 
