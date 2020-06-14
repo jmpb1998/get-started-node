@@ -244,6 +244,28 @@ function findDBmodule(school){
     });
 }
 
+function deleteQuestionEntry(questionID) {
+  return new Promise((resolve, reject) => {
+    db.get(questionID, function(err, body) {
+      if (!err) {
+        var latestRev = body._rev;
+        db.destroy(questionID, latestRev, function(err, body, header) {
+          if (!err) {
+              console.log("Successfully deleted doc", questionID);
+          }
+        });
+      }
+    }, (err, documents) => {
+        if (err) {
+          reject(err);
+        } else {
+          documents.passed = true; 
+          resolve(documents); 
+        }
+    })
+  })
+}
+
 
 
 // get indexes of DB 
@@ -514,20 +536,40 @@ app.get('/getLeaderboard', (req,res)=>{
   })
 });
 
+app.post('/deleteEntry', (req, res) => {
+  
+  console.log("request sent");
+  var userCookie = req.cookies.loginKey.toString(); 
+  var questionDeleteId = req.body.questionDeleteId;
+  console.log(req.body);
+  console.log(questionDeleteId);
+  if (questionDeleteId != null) {
+
+        deleteQuestionEntry(questionDeleteId).then( function(v) {
+        }); 
+  }
+
+  console.log("request sent");
+  var userCookie = req.cookies.loginKey.toString()  ; 
+
+})
 
 app.get('/getQuestion', (req, res) =>{
-    console.log("request sent");
-  var userCookie = req.cookies.loginKey.toString()  ; 
-  // req.cookies.loginKey.toString() 
     
+  console.log("request sent");
+    var userCookie = req.cookies.loginKey.toString()  ; 
+
   findByDescription(userCookie).then( function(v) {
     
     var user = v[0]._id; 
     console.log(user);
+
+    
     // fetched user making request 
     // fetch questions from user now 
     findQuestionDB(user).then( function(dbData) {
       var questions = dbData; 
+      
       module.exports.dbData = dbData;
       console.log(dbData); 
       //res.json(dbData); 
@@ -542,9 +584,7 @@ app.get('/getQuestion', (req, res) =>{
   // res.json(documents); 
 })
 
-app.get('/questionForm', (req, res) =>{
-    
-}
+
 
 
 // login check 
