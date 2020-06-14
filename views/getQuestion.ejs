@@ -72,13 +72,14 @@ font-family: Carla;}
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Answer</th>
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Subject</td>
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Difficulty</td>
+                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm"></td>
                                 </tr>
                             </thead>
                             <tbody class="text-gray-700">
                                     <%
                                         var list = '';
                                         for (i = 0; i < formsub.length; i++) {
-                                        list += '<tr class="bg-gray-200"> <td class="w-1/3 text-left py-3 px-4">' + name +'</td>' + '<td class="w-1/3 text-left py-3 px-4">' + formsub[i].question + '</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].answer +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].module +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].difficulty +'</td> </tr>';
+                                        list += '<tr class="bg-gray-200"> <td class="w-1/3 text-left py-3 px-4">' + name +'</td>' + '<td class="w-1/3 text-left py-3 px-4">' + formsub[i].question + '</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].answer +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].module +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].difficulty +'</td> <td class="w-1/3 py-3 px-4"> <img class="" src="bin.png" alt="bin"></img> </td> </tr>';
                                         }
                                     %>
                                     <%- list %>
