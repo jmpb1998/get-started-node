@@ -39,7 +39,7 @@ font-family: Carla;}
     <aside class="fixed bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
         <nav class="text-white text-base font-semibold pt-3">
             <div class='logo font-normal'>Flappy Fish</div>
-            <a href="questionForm.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item">
+            <a href="questionForm" class="flex items-center text-white opacity-75 hover:opacity-100 py-6 pl-6 nav-item">
                 <i class=" mr-3"></i>
                 Add Questions
             </a>
@@ -240,7 +240,7 @@ font-family: Carla;}
 
         document.body.questionDeleteId = elem.id; 
 
-        var xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequ   est();
         xhr.open("POST", '/deleteEntry', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
