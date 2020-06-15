@@ -119,12 +119,29 @@ function findByDescription(partialDescription) {
     });
 }
 
-function teacherSubjectQuery(teacher){
+function teacherSubjectQuery(teacherCookie){
     return new Promise((resolve, reject) => {
         db.find({
             "selector": {
-                "teacher": search,
+                "loginCookie": teacherCookie,
                 "type": "user"
+            }
+        }, (err, documents) => {
+            if (err) {
+                reject(err);
+            } else {
+                //resolve({ data: JSON.stringify(documents.docs), statusCode: (documents.docs.length > 0) ? 200 : 404 });
+                resolve((documents.docs));
+            }
+        });
+    });
+}
+
+function schoolClassQuery(){
+    return new Promise((resolve, reject) => {
+        db.find({
+            "selector": {
+                "type": "module"
             }
         }, (err, documents) => {
             if (err) {
@@ -225,12 +242,8 @@ function findDBmodule(school){
     return new Promise((resolve, reject) => {
           db.find({
           "selector": {
-                "school": {
-                  "$eq": school
-                },
-                "type": {
-                  "$eq": "module"
-                }
+                "school": school,
+                "type": "module"
                     
           } 
       }, (err, documents) => {
@@ -265,7 +278,6 @@ function deleteQuestionEntry(questionID) {
     })
   })
 }
-
 
 
 // get indexes of DB 
@@ -339,26 +351,6 @@ checkExist.cloudant = function(doc) {
     });
 }
 
-
-
-/* Endpoint to greet and add a new visitor to database.
-* Send a POST request to localhost:3000/api/visitors with body
-* {
-*   "name": "Bob"
-* }
-*/
-app.post("/api/visitors", urlencodedParser, function (request, response) {
-  var userName = request.body.name;
-  var doc = { "name" : userName };
-  if(!mydb) {
-    console.log("No database.");
-    response.send(doc);
-    return;
-  }
-  insertOne[vendor](doc);
-});
-
-
 // Register users 
 app.post("/registerUser", urlencodedParser, function (req, res, done) {
   console.log("Register new user");
@@ -407,8 +399,8 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     findDBmodule(school).then(function(v){
         let modules = v.map(s => s.module)
         let addClasses = classList.filter(el => modules.indexOf(el) < 0);
-        console.log(addClasses);
-        console.log(modules);
+        console.log("This is Add Classes" + addClasses);
+        console.log("This is Modules" + modules);
         addClasses.forEach(c => {
             let qdoc = {"school": school, "module": c, "type":"module"}
                 db.insert(qdoc, function(err, body, header) {
@@ -426,12 +418,12 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     db.insert(doc, function(err, body, header) {
       if (err) {
         console.log('[mydb.insert] ', err.message);
-        res.redirect('/register.html')
+        res.redirect('/register')
         //response.send("Error");
         return;
       } else {
         res.cookie('loginKey', randomNumber); 
-        res.redirect('/questionForm.html');  
+        res.redirect('/questionForm');  
       }
       //doc._id = body.id;
       //callback(err, body); 
@@ -453,7 +445,7 @@ app.post("/loginUser", urlencodedParser, function (req, res, done) {
   findUserDB(email, password).then( function(dbData) {
 
   res.cookie('loginKey', dbData.loginCookie); 
-  res.redirect('/questionForm.html');  
+  res.redirect('/questionForm');  
 })
 })
 // Submit question
@@ -500,7 +492,7 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
       }
 
       doc._id = body.id;
-      res.redirect('/questionForm.html');
+      res.redirect('/questionForm');
       
       //callback(err, body); 
     }); 
@@ -554,22 +546,20 @@ app.post('/deleteEntry', (req, res) => {
 
 })
 
-app.get('/getQuestion', (req, res) =>{
-    
-  console.log("request sent");
-    var userCookie = req.cookies.loginKey.toString()  ; 
 
+app.get('/getQuestion', (req, res) =>{
+    console.log("request sent");
+  var userCookie = req.cookies.loginKey.toString()  ; 
+  // req.cookies.loginKey.toString() 
+    
   findByDescription(userCookie).then( function(v) {
     
     var user = v[0]._id; 
     console.log(user);
-
-    
     // fetched user making request 
     // fetch questions from user now 
     findQuestionDB(user).then( function(dbData) {
       var questions = dbData; 
-      
       module.exports.dbData = dbData;
       console.log(dbData); 
       //res.json(dbData); 
@@ -584,8 +574,57 @@ app.get('/getQuestion', (req, res) =>{
   // res.json(documents); 
 })
 
+app.get('/questionForm', (req, res) =>{
+    var userCookie = req.cookies.loginKey.toString();
+    teacherSubjectQuery(userCookie).then(function(teacherData){
+       console.log(teacherData);
+       module.exports.teacherData = teacherData;
+       console.log(teacherData[0].classTag);
+        res.render('questionForm', {questionSub: teacherData[0].classTag});
+    })
+});
 
-
+app.get('/register', (req, res) => {
+    schoolClassQuery().then(function(schoolClassData){
+        console.log(schoolClassData);
+        let schools = schoolClassData.map(s => s.school);
+        let sortedSchools = schools.sort();
+        var uniqueSchools = [sortedSchools[0]];
+        for (var i = 1; i < sortedSchools.length; i++) {
+            if (sortedSchools[i-1] !== sortedSchools[i]) {
+            uniqueSchools.push(sortedSchools[i]);
+            }
+        }
+        var temp = [];
+        var schoolModuleList = [];
+        for(var i = 0; i < uniqueSchools.length; i++){
+            schoolClassData.forEach(c => {
+                if(c.school == uniqueSchools[i]){
+                    temp.push(c.module);
+                }
+            })
+            console.log(temp);
+            schoolModuleList.push(temp);
+            temp = []
+        }
+        console.log(schools);
+        console.log(sortedSchools);
+        console.log(uniqueSchools);
+        var jsonString = "[";
+        for(var i = 0; i < uniqueSchools.length; i++){
+            jsonString += '{"' + uniqueSchools[i] + '":' + JSON.stringify(schoolModuleList[i]) + '},';
+        }
+        console.log(jsonString);
+        jsonString = jsonString.substring(0, jsonString.length - 1);
+        jsonString += "]";
+        console.log(jsonString);
+        
+        var formData = JSON.parse(jsonString);
+        console.log(formData[0].ICL[0]);
+        
+        res.render('register', {formData: formData});
+    });
+})
 
 // login check 
 app.post('/loginCheck', urlencodedParser, function (req, res) {
@@ -633,7 +672,7 @@ app.post('/loginCheck', urlencodedParser, function (req, res) {
           }
         });
         
-        return res.redirect('/questionForm.html');
+        return res.redirect('/questionForm');
       }
       else {
         // login unsuccessful 
@@ -641,30 +680,9 @@ app.post('/loginCheck', urlencodedParser, function (req, res) {
       }
     })
 
-  }  
+  }
 
   
-});
-
-
-/**
- * Endpoint to get a JSON array of all the visitors in the database
- * REST API example:
- * <code>
- * GET http://localhost:3000/api/visitors
- * </code>
- *
- * Response:
- * [ "Bob", "Jane" ]
- * @return An array of all the visitor names
- */
-app.get("/api/visitors", function (request, response) {
-  var names = [];
-  if(!mydb) {
-    response.json(names);
-    return;
-  }
-  getAll[vendor](response);
 });
 
 // load local VCAP configuration  and service credentials
