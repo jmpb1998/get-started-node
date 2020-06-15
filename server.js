@@ -359,6 +359,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
   var password = req.body.password; 
   var repPassword = req.body.repeatPassword;  
   var school = req.body.school[0];
+  var accountType = req.body.accountType;
   if (school == "Other") school = req.body.school[1]; 
 
 
@@ -392,7 +393,7 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     console.log(randomNumber);
     console.log('cookie created successfully');
 
-    var doc = { "_id": username, "type" : type, "email" : email, "password" : password, "school" : school, "classTag" : classList, "loginCookie" : randomNumber, "score" : scoreList};
+    var doc = { "_id": username, "type" : type, "accountType":accountType, "email" : email, "password" : password, "school" : school, "classTag" : classList, "loginCookie" : randomNumber, "score" : scoreList};
   
     console.log(doc);
     
@@ -423,7 +424,12 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
         return;
       } else {
         res.cookie('loginKey', randomNumber); 
+        
+        if(accountType == "Teacher")
         res.redirect('/questionForm');  
+        else{
+            res.redirect('/studentRegistered.html');
+        }
       }
       //doc._id = body.id;
       //callback(err, body); 
@@ -620,7 +626,6 @@ app.get('/register', (req, res) => {
         console.log(jsonString);
         
         var formData = JSON.parse(jsonString);
-        console.log(formData[0].ICL[0]);
         
         res.render('register', {formData: formData});
     });
