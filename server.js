@@ -358,14 +358,14 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
   var email    = req.body.email;
   var password = req.body.password; 
   var repPassword = req.body.repeatPassword;  
-  var school = req.body.school[0];
+  var school = req.body.school;
   var accountType = req.body.accountType;
-  if (school == "Other") school = req.body.school[1]; 
+  var classList = req.body.classTag;
 
 
   // Register the number of modules in classTag list 
-  var classList = []; 
-  for (var i = 0; i < req.body.classTag.length; i++) {
+  console.log(req.body.classTag);
+  /*for (var i = 0; i < req.body.classTag.length; i++) {
     if (req.body.classTag[i] == "Other") {
       classList.push(req.body.classTag[i+1]); 
       i++;
@@ -373,13 +373,22 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     else {
       classList.push(req.body.classTag[i]);
     }
-  }
+  }*/
 
   // initialize score list 
+  
+  console.log(typeof(classList));
   var scoreList = []; 
-  for (var i = 0; i < classList.length; i++) {
-    scoreList.push(0); 
-  }
+  var otherIndex = classList.indexOf("Other");
+  if(otherIndex > -1) classList.splice(otherIndex, 1);
+if(typeof(classList) == "object"){
+    for (var i = 0; i < classList.length; i++) {
+        scoreList.push(0); 
+    }
+}
+else{
+    scoreList.push(0);
+}
 
   var type = "user"; 
 
@@ -396,10 +405,22 @@ app.post("/registerUser", urlencodedParser, function (req, res, done) {
     var doc = { "_id": username, "type" : type, "accountType":accountType, "email" : email, "password" : password, "school" : school, "classTag" : classList, "loginCookie" : randomNumber, "score" : scoreList};
   
     console.log(doc);
+    var classArray = [];
+    if(typeof(classList) == "string"){
+        classArray.push(classList);
+    }
+    else{
+        classList.forEach(c => {
+            classArray.push(c);
+        })
+    }
+    
     
     findDBmodule(school).then(function(v){
         let modules = v.map(s => s.module)
-        let addClasses = classList.filter(el => modules.indexOf(el) < 0);
+        modules.push("Other");
+        console.log(modules);
+        let addClasses = classArray.filter(el => modules.indexOf(el) < 0);
         console.log("This is Add Classes" + addClasses);
         console.log("This is Modules" + modules);
         addClasses.forEach(c => {
@@ -452,7 +473,7 @@ app.post("/loginUser", urlencodedParser, function (req, res, done) {
 
   res.cookie('loginKey', dbData.loginCookie); 
   res.redirect('/questionForm');  
-})
+    })
 })
 // Submit question
 app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
@@ -627,7 +648,7 @@ app.get('/register', (req, res) => {
         
         var formData = JSON.parse(jsonString);
         
-        res.render('register', {formData: formData});
+        res.render('register', {formData: formData, uniqueSchools: uniqueSchools});
     });
 })
 

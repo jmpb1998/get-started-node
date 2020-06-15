@@ -55,10 +55,14 @@
                 appendString += '</select></div>';
                 $("#moduleContainer").append(appendString);
             
-            if(val=='Other')
+            if(val=='Other'){
                 $('#schoolInput').append('<input type="text" name="school" id="school" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" >')
-            else 
+                $('#schoolId').removeAttr("name");
+            }
+            else {
                 $('#schoolInput').empty();
+                $('#schoolId').attr("name", "school");
+                }
         }
     </script> 
     
@@ -73,10 +77,12 @@
         console.log(currentIndex);
         selector = "#classTagSelect" + index;
             if(val=='Other'){
+                $(selector).children().removeAttr("name");
                 $(selector).append('<input type="text" name="classTag" class=" classTagInput shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" >')
             }
             else  {
                 $(selector).children().remove(".classTagInput");
+                $(selector).children().attr("name", "classTag");
                 console.log(selector);
             }
             if(index == currentIndex){
@@ -207,8 +213,6 @@
                         <option>Student</option>
                         </select>
 
-                        <input type="text" name="accountType" id="accountType" style='display:none;' class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" >
-
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                         </div>
@@ -221,14 +225,15 @@
                         
                         <select id="schoolId" name="school"  onchange='CheckSchool(this.value);' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                         <option disabled selected value> -- select an School -- </option>
-                        <option>ICL</option>
-                        <option>UCL</option>
-                        <option>LSE</option>
-                        <option>Other</option>
-                        </select>
-                        
+                        <%
+                                        var list = '';
+                                        for (i = 0; i < uniqueSchools.length; i++) {
+                                            list += '<option>' + uniqueSchools[i] + '</option>';
+                                        }
+                                        list += '<option>Other</option></select>';
+                                        %>
+                        <%- list %>
                         <div id="schoolInput">
-                        <input type="text" name="school" id="school" style='display:none;' class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" >
                         </div>
                         
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
