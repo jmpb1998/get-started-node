@@ -193,7 +193,7 @@ function cookietoName(cookie){
     });
 }
 
-function findQuestionDB (username) {
+function findQuestionDB (school) {
   return new Promise((resolve, reject) => {
   
       db.find({
@@ -201,8 +201,8 @@ function findQuestionDB (username) {
                 "type": {
                   "$eq": "question"
                 },
-                "teacher": {
-                  "$eq": username
+                "school": {
+                  "$eq": school
                 }
           } 
       }, (err, documents) => {
@@ -585,7 +585,7 @@ app.get('/getQuestion', (req, res) =>{
     console.log(user);
     // fetched user making request 
     // fetch questions from user now 
-    findQuestionDB(user).then( function(dbData) {
+    findQuestionDB(v[0].school).then( function(dbData) {
       var questions = dbData; 
       module.exports.dbData = dbData;
       console.log(dbData); 
