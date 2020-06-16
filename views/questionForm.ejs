@@ -98,9 +98,15 @@ font-family: Carla;}
                                 <%
                                         var list = '';
                                         console.log(questionSub);
-                                        for(i = 0; i < questionSub.length; i++){
-                                            list += "<option>" + questionSub[i] + "</option>";
-                                        };
+                                        console.log(typeof(questionSub));
+                                        if(typeof(questionSub) == "object"){
+                                            for(i = 0; i < questionSub.length; i++){
+                                                list += "<option>" + questionSub[i] + "</option>";
+                                            };
+                                        }
+                                        else{
+                                            list += "<option>" + questionSub + "</option>";
+                                        }
                                     %>
                                     <%- list %>
                                 </select>
