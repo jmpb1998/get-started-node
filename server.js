@@ -486,7 +486,7 @@ app.post("/submitQuestion", urlencodedParser, function (req, res, done) {
 
   findByDescription(req.cookies.loginKey.toString()).then(function(v) {
     var _class = v[0].classTag[0]; 
-    var school = v[0].school[0]; 
+    var school = v[0].school; 
     console.log(req.body.question);
 
     var type = "question";
