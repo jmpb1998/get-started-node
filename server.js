@@ -389,7 +389,7 @@ if(typeof(classList) == "object"){
 else{
     scoreList.push(0);
 }
-
+console.log("ScoreList: " + scoreList);
   var type = "user"; 
 
   // pass checks 
@@ -606,7 +606,7 @@ app.get('/questionForm', (req, res) =>{
     teacherSubjectQuery(userCookie).then(function(teacherData){
        console.log(teacherData);
        module.exports.teacherData = teacherData;
-       console.log(teacherData[0].classTag);
+       console.log("Display ClassTag" + teacherData[0].classTag);
         res.render('questionForm', {questionSub: teacherData[0].classTag});
     })
 });
@@ -679,6 +679,7 @@ app.post('/loginCheck', urlencodedParser, function (req, res) {
         var school = v[0].school; 
         var email = v[0].email; 
         var type = v[0].type; 
+        var score = v[0].score;
 
 
         // create cookie 
@@ -687,7 +688,7 @@ app.post('/loginCheck', urlencodedParser, function (req, res) {
         res.cookie('loginKey', randomNumber);
         console.log('cookie created successfully');
     
-        var doc = {"_id" : userName, "password" : password, "loginCookie" : randomNumber, "_rev" : v[0]._rev, "school" : school, "classTag": _class, "type" : type, "email" : email};
+        var doc = {"_id" : userName, "password" : password, "loginCookie" : randomNumber, "_rev" : v[0]._rev, "school" : school, "classTag": _class, "type" : type, "email" : email, "score": score};
         console.log(doc);
         // Update user cookie 
         db.insert(doc, function(err, body, header) {

@@ -33,6 +33,15 @@ border-bottom: 1px solid rgba(255,255,255,0.8);
 
 font-family: Carla;}
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"> </script>
+    <script type="text/javascript">
+    function showAnswer(){
+        
+        var allOptions = $(".showWrong").toggle();
+        $("#answerHead1").toggle();
+        $("#answerHead2").toggle();
+    }
+    </script>
 </head>
 <body class="bg-gray-100 font-family-karla flex" style="background: linear-gradient(rgb(47,150,163), rgb(48,62,143));" >
     
@@ -69,7 +78,8 @@ font-family: Carla;}
                                 <tr>
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Teacher</th>
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Question</th>
-                                    <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Answer</th>
+                                    <th id="answerHead1" onclick="showAnswer()" class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm" style="cursor: pointer;"><span>Correct Answer</span> /<span style="opacity:.25;"> All Answers</span></th><p>
+                                    <th id="answerHead2" onclick="showAnswer()" class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm" style="cursor: pointer; display:none;"><span style="opacity:.25;">Correct Answer</span> /<span> All Answers</span></th><p>
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Subject</td>
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm">Difficulty</td>
                                     <th class="w-1/6 text-left py-3 px-4 uppercase font-semibold text-sm"></td>
@@ -79,7 +89,7 @@ font-family: Carla;}
                                     <%
                                         var list = '';
                                         for (i = 0; i < formsub.length; i++) {
-                                        list += '<tr class="bg-gray-200"><td class="w-1/3 text-left py-3 px-4">' + name +'</td>' + '<td class="w-1/3 text-left py-3 px-4">' + formsub[i].question + '</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].answer +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].module +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].difficulty +'</td> <td class="w-1/3 py-3 px-4 "><div class="w-5"><button id="' + formsub[i]._id + '" onclick="toggleModal(this)" ><img class="w-auto" src="bin.png" alt="bin"></img></button></div></td> </tr>';
+                                        list += '<tr class="bg-gray-200"><td class="w-1/3 text-left py-3 px-4">' + name +'</td>' + '<td class="w-1/3 text-left py-3 px-4">' + formsub[i].question + '</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].answer + ' <span class="showWrong" style="display:none"> / ' + formsub[i].wrong1+ ' / ' +  formsub[i].wrong2 + ' / ' + formsub[i].wrong3 + ' / ' + formsub[i].wrong4 + '</span></td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].module +'</td> <td class="w-1/3 text-left py-3 px-4">' + formsub[i].difficulty +'</td> <td class="w-1/3 py-3 px-4 "><div class="w-5"><button id="' + formsub[i]._id + '" onclick="toggleModal(this)" ><img class="w-auto" src="bin.png" alt="bin"></img></button></div></td> </tr>';
                                         }
                                     %> 
                                     <%- list %>
